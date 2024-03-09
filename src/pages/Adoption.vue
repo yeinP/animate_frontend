@@ -1,7 +1,7 @@
 <template>
 <div class="container">
   <div class="alter">
-    <i class="fa fa-exclamation" aria-hidden="true"></i><sapn> 입양 문의는 보호센터로 연락 바랍니다.</sapn>
+    <i class="fa fa-exclamation" aria-hidden="true"></i><span> 입양 문의는 보호센터로 연락 바랍니다.</span>
   </div>
   <div class="searchBar d-flex justify-content-center">
     <div class="date">
@@ -162,7 +162,7 @@ export default {
             _type: 'json',
           },
         });
-
+          console.log(response.data);
         if (response.data && response.data.response && response.data.response.body && response.data.response.body.items) {
           this.adoptionAnimals = Array.isArray(response.data.response.body.items.item)
               ? response.data.response.body.items.item
@@ -179,7 +179,7 @@ export default {
     },
     async fetchSidoList() {
       try {
-        const response = await fetch("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/sido?numOfRows=17&pageNo=1&serviceKey=aQc0i7nxPnLiQlZAS7cmLwlDZjOT3fdCdEI7XY2VzJP57%2BS1B6Djo1EeqOtJX0t7C%2B%2F3OQ4G7K5Eklk%2FZooJmw%3D%3D");
+        const response = await fetch('http://apis.data.go.kr/1543061/abandonmentPublicSrvc/sido?numOfRows=17&pageNo=1&serviceKey=aQc0i7nxPnLiQlZAS7cmLwlDZjOT3fdCdEI7XY2VzJP57%2BS1B6Djo1EeqOtJX0t7C%2B%2F3OQ4G7K5Eklk%2FZooJmw%3D%3D');
         const xmlData = await response.text();
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlData, 'application/xml');

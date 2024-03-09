@@ -1,6 +1,6 @@
 import Home from "@/pages/Home.vue";
 import Login from "@/pages/Login.vue";
-import Review from "@/pages/Review.vue";
+import Review from "@/pages/AdoptionReview/Review.vue";
 import {createRouter, createWebHistory} from "vue-router";
 import ShelterInfo from "@/pages/ShelterInfo.vue";
 import RegisterStep1 from "@/pages/register/RegisterStep1.vue";
@@ -8,6 +8,7 @@ import RegisterStep2 from "@/pages/register/RegisterStep2.vue";
 import Adoption from "@/pages/Adoption.vue";
 import Miss from "@/pages/miss_report/Miss.vue";
 import Mypage from "@/pages/Mypage.vue";
+import AdoptionArticle from "@/pages/AdoptionReview/AdoptionArticle.vue";
 
 
 
@@ -21,6 +22,7 @@ const routes = [
     {path: '/animal/miss_care', component: Miss},
     {path: '/adoption', component: Adoption},
     {path: '/mypage', component: Mypage},
+    { path: '/adoption/article/:arNo', name: 'AdoptionArticle', component: AdoptionArticle },
 
 
 ]

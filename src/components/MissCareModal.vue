@@ -5,7 +5,7 @@
       <div class="closeBtn">
         <div :class="msStatusClass">{{mcStatusLabel}}</div>
         <span>{{missCare.mcBreed}}</span>
-      <button @click="closeModal" >X</button>
+      <button @click="closeModal"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
       </div>
       <div class="box">
         <div class="content">
@@ -82,10 +82,10 @@
           </div>
         </div>
         <div class="box">
-        <div class="replyBox">
-          <input type="text" class="reply" v-model="reply" placeholder="댓글을 작성해주세요">
-          <button type="button" class="btn-reply" @click="writeReply">작성</button>
-        </div>
+          <div class="replyBox">
+            <input type="text" class="reply" v-model="reply" placeholder="댓글을 작성해주세요">
+            <button type="button" class="btn-reply" @click="writeReply">작성</button>
+          </div>
           <div class="replyBox-child">
             <div class="reply_" v-for="(reply, index) in replyList" :key="index">
               <div class="reply-info">
@@ -280,12 +280,9 @@ export default {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           }
-        })
-            .then(response => {
-              this.$router.push({ path: `/animal/miss_care/modal/${this.mcNo}`}).then(() => {
-                window.location.reload();
-              });
-              console.log("post" + response);
+        }).then(response => {
+          this.reply = '';
+          console.log("post" + response)
             })
             .catch(error =>{
               console.error(error);
@@ -314,9 +311,7 @@ export default {
             'Content-Type': 'application/x-www-form-urlencoded'
           }
         }).then(response => {
-          this.$router.push({ path: `/animal/miss_care/modal/${this.mcNo}`}).then(() => {
-            window.location.reload();
-          });
+          // this.$router.go(0);
           console.log(response);
         }).catch(error => {
           console.error(error);
@@ -364,7 +359,10 @@ export default {
 }
 
 .closeBtn button {
+  background-color: white;
+  border: 0;
   margin-left: auto;
+  font-size: 23px;
 }
 .animal-info{
   width: 400px;

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div>
-      <button @click="openWriteToggle" class="miss-btn"><i class="fa fa-paw" aria-hidden="true"></i>입양후기 작성</button>
+    <div style="display: flex;     flex-direction: row-reverse; margin-bottom: 10px;">
+      <button @click="openWriteToggle" class="ar-Btn"><i class="fa fa-paw" aria-hidden="true"></i>입양후기 작성</button>
     </div>
     <div v-if="showModal" class="modal modal-sheet position-static d-block p-4 py-md-5" tabindex="-1" role="dialog" id="modalSheet">
       <div class="card shadow-sm">
@@ -31,7 +31,7 @@
         </div>
         <div class="card-body">
           <div>
-            <textarea type="text" placeholder="내용을 작성해 주세요" v-model="arContent" class="arContent" @keyup.enter="handleEnter"></textarea>
+            <textarea type="text" style="width: 100%; height: 150px;" placeholder="내용을 작성해 주세요" v-model="arContent" class="arContent" @keyup.enter="handleEnter"></textarea>
           </div>
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
@@ -43,7 +43,7 @@
     </div>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
       <div class="col" v-for="adoptionReview in paginationArList" :key="adoptionReview.arNo">
-        <ReviewCard :adoptionReview="adoptionReview" :arImgList="arImgList"/>
+        <ReviewCard :adoptionReview="adoptionReview" :arImgList="arImgList" :adoptionUserNickname="adoptionReview ? adoptionReview.userNickname : null" />
       </div>
     </div>
     <div class="pagination d-flex justify-content-center" >
@@ -98,10 +98,6 @@ export default {
     },
   },
   methods:{
-    handleEnter() {
-
-      this.arContent += "\n";
-    },
     getImgList(){
       axios.get('http://localhost:9090/adoption/review/imgList')
           .then((response) => {
@@ -129,6 +125,7 @@ export default {
       axios.get('http://localhost:9090/adoption/review/list')
           .then((response) => {
             this.arList = response.data;
+            console.log(response.data);
             this.totalPages = Math.ceil(this.arList.length / this.itemsPerPage);
             if (this.currentPage > this.totalPages) {
               this.currentPage = this.totalPages;
@@ -219,6 +216,7 @@ export default {
 }
 
 .arContent[data-v-daf79208]::placeholder {
+  width: 100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -226,24 +224,6 @@ export default {
   padding: 0 1rem;
   margin: 0;
   color: #555;
-  cursor: text;
-}
-
-.arContent[data-v-daf79208]:not(:placeholder-shown) {
-  text-align: left;
-}
-
-/* Adjust the vertical alignment of the entered text */
-.arContent[data-v-daf79208]:not(:placeholder-shown)::after {
-  content: attr(data-v-daf79208);
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 18px;
-  padding: 0 1rem;
-  margin: 0;
-  color: #000;
-  vertical-align: top;
   cursor: text;
 }
 
@@ -361,5 +341,17 @@ export default {
 .bd-mode-toggle .dropdown-menu .active .bi {
   display: block !important;
 }
-
+.ar-Btn{
+  width: 180px;
+  height: 35px;
+  background-color: rgba(205, 205, 103, 1);
+  border: 0;
+  color: #fff;
+  border-radius: 4px;
+  font-weight: bold;
+}
+.pagination button{
+  background-color: white;
+  border: 0;
+}
 </style>

@@ -1,19 +1,18 @@
 <template>
   <div class="container">
     <div class="content">
-    <main>
       <div class="py-5 text-center">
       </div>
       <div class="g-5">
         <div class="col-md-7 col-lg-8">
           <h4 class="mb-3">회원가입</h4>
-          <form ref="form" class="needs-validation" novalidate @submit.prevent="signUpSubmit">
+          <div class="needs-validation">
             <div class="row g-3">
               <div class="col-12">
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
-                  <input type="text" class="form-control" v-model="userId" placeholder="아이디" required :rules="userIdRules">
-                  <div class="invalid-feedback">
+                  <input type="text" class="form-control" v-model="userId" placeholder="아이디" required :class="{ 'is-invalid': !userIdRules[0](userId) }">
+                  <div class="invalid-feedbacks">
                     {{ userIdRules[0](userId) || '' }}
                   </div>
                 </div>
@@ -26,8 +25,10 @@
                   <span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   <input type="password" class="form-control" v-model="userPassword" placeholder="비밀번호" required :rules="userPasswordRules">
 
-                  <div class="invalid-feedback">
-                    <span v-for="rule in userPasswordRules" :key="rule">{{ rule(userPassword) || '' }}</span>
+                  <div class="invalid-feedbacks">
+                    <span v-for="rule in userPasswordRules" :key="rule">
+                      {{ rule(userPassword) || `Rule error: ${rule(userPassword)}` }}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -36,7 +37,7 @@
                   <span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   <input type="password" class="form-control" v-model="userPasswordCheck" placeholder="비밀번호 확인" :rules="passwordCheckRules.concat(passwordConfirmationRule)" required>
 
-                  <div class="invalid-feedback">
+                  <div class="invalid-feedbacks">
                     {{ passwordCheckRules[0](userPasswordCheck) || '' }}
                   </div>
                 </div>
@@ -45,7 +46,7 @@
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa fa-id-card" aria-hidden="true"></i></span>
                   <input type="text" class="form-control" v-model="userName" placeholder="이름" required :rules="userNameRules">
-                  <div class="invalid-feedback">
+                  <div class="invalid-feedbacks">
                     {{ userNameRules[0](userName) || '' }}
                   </div>
                 </div>
@@ -55,7 +56,7 @@
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa fa-user-plus" aria-hidden="true"></i></span>
                   <input type="text" class="form-control" v-model="userNickname" placeholder="닉네임" required :rules="nicknameRules">
-                  <div class="invalid-feedback">
+                  <div class="invalid-feedbacks">
                     <span v-for="rule in nicknameRules" :key="rule">{{ rule(userNickname) || '' }}</span>
                   </div>
                 </div>
@@ -64,7 +65,7 @@
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa fa-phone" aria-hidden="true"></i></span>
                   <input type="text" class="form-control" v-model="userPhone" placeholder="전화번호" required :rules="userPhoneRules">
-                  <div class="invalid-feedback">
+                  <div class="invalid-feedbacks">
                     <span v-for="rule in userPhoneRules" :key="rule">{{ rule(userPhone) || '' }}</span>
                   </div>
                 </div>
@@ -74,57 +75,72 @@
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa  fa-envelope-o" aria-hidden="true"></i></span>
                   <input type="text" class="form-control" v-model="userEmail" placeholder="[선택] 이메일" :rules="emailRules">
-                  <div class="invalid-feedback">
+                  <div class="invalid-feedbacks">
                     {{ emailRules[0](userEmail) || '' }}
                   </div>
                 </div>
               </div>
             </div>
-            <button class="w-100 btn btn-primary btn-lg"  @click.prevent="signUpSubmit">인증요청</button>
-          </form>
+            <button class="w-100 btn btn-primary btn-lg"  @click.prevent="signUpSubmit">로그인</button>
+          </div>
         </div>
       </div>
-    </main>
+
   </div>
   </div>
 </template>
 <script>
+import axios from "axios";
+
 export default {
-  name:"RegisterStep2",
-  data(){
+  name: "RegisterStep2",
+  data() {
+
     return {
-      userId:"",
-      userIdRules:[
-        (v) => !!v || '아이디를 작성해주세요',
+      userDto: {
+        userId: null,
+        userPassword: null,
+        userName: null,
+        userNickname: null,
+        userPhone: null,
+        userEmail: null,
+      },
+      userId: "",
+      userIdRules: [
+        (v) => {
+          const isValid = (v !== undefined && v !== null && v.trim() !== '');
+          console.log('userIdRules:', isValid);
+          return isValid || '아이디를 작성해주세요';
+        },
       ],
       userPassword: "",
       userPasswordRules: [
-        (v) => !!v || '비밀번호을 작성해주세요',
-        (v) => (v && v.length >= 5) || '비밀번호는 5글자 이상 작성해주세요',
-        (v) => /(?=.*\d)/.test(v) || '숫자를 포함해야합니다',
-        (v) => /([!@$%])/.test(v) || '특수문자를 포함해야합니다 [!@#$%]'
+        (v) => !!v ||  '비밀번호를 작성해주세요',
+        (v) => (v && v.length >= 5) ||  '5글자 이상 작성해주세요',
+        (v) => /(?=.*\d)/.test(v) ||  '숫자를 포함해야합니다',
+        (v) => /([!@$%])/.test(v) || '특수문자를 포함해야합니다 [!@#$%]',
       ],
-      userPasswordCheck : "",
+      userPasswordCheck: "",
       passwordCheckRules: [
         (v) => !!v || '비밀번호를 확인을 작성해주세요',
       ],
-      userName:"",
-      userNameRules:[
+      userName: "",
+      userNameRules: [
         (v) => !!v || '이름을 작성해주세요',
       ],
 
-      userNickname : "",
-      nicknameRules:[
-        (v) =>  !!v || '닉네임을 작성해주세요',
+      userNickname: "",
+      nicknameRules: [
+        (v) => !!v || '닉네임을 작성해주세요',
         (v) => (v && v.length <= 10) || '닉네임을 10글자를 넘을 수 없습니다.',
       ],
-      userPhone:"",
-      userPhoneRules:[
+      userPhone: "",
+      userPhoneRules: [
         (v) => !!v || '전화번호를 작성해주세요',
         (v) => (v && /^\d{11}$/.test(v)) || '숫자 11자리로 입력해주세요',
       ],
       userEmail: "",
-      emailRules:[
+      emailRules: [
         (v) => /.+@.+\..+/.test(v) || "이메일 형식으로 작성해주세요",
       ],
 
@@ -132,54 +148,50 @@ export default {
     }
 
   },
-  computed:{
+  computed: {
     passwordConfirmationRule() {
       return () =>
           this.userPassword !== this.userPasswordCheck || "패스워드가 일치하지 않습니다";
     }
   },
+  mounted() {
+    console.log('Mounted!');
+  },
   methods: {
     signUpSubmit() {
-      const formComponent = this.$refs.form;
-      if (formComponent && formComponent.validate) {
-        const validate = formComponent.validate();
-        if (validate) {
-          let saveData = {};
-          saveData.userId = this.userId;
-          saveData.userPassword = this.userPassword;
-          saveData.userNickname = this.userNickname;
-          saveData.userName = this.userName;
-          saveData.userPhone=this.userPhone;
-          saveData.userEmail = this.userEmail;
+      const regData = {
+        userId:this.userId,
+        userPassword:this.userPassword,
+        userName: this.userName,
+        userNickname: this.userNickname,
+        userPhone: this.userPhone,
+        userEmail: this.userEmail,
+      };
+      try {
+        axios.post("/animate/user/register", regData, {
+          headers: {
+            "Content-Type": `application/json`,
+          },
+        })
+            .then((response) => {
+              console.log(response)
+              if (response.data.errorCode === 400) {
+                alert(response.data.errorMessage)
 
-          try {
-            this.$axios.post("/animate/user/register", JSON.stringify(saveData), {
-              headers: {
-                "Content-Type": `application/json`,
-              },
+              } else {
+                alert("회원가입이 완료되었습니다. 로그인 화면으로 돌아갑니다")
+                this.$router.push({path: '/login'});
+              }
             })
-                .then((response) => {
-                  console.log(response)
-                  if (response.data.errorCode === 400) {
-                    alert(response.data.errorMessage)
+            .catch(error => {
+              console.log(error.response);
 
-                  } else {
-                    alert("회원가입이 완료되었습니다. 로그인 화면으로 돌아갑니다")
-                    this.$router.push({path: './login'});
-                  }
-                })
-                .catch(error => {
-                  console.log(error.response);
-
-                });
-          } catch (error) {
-            console.error(error);
-          }
-        }
+            });
+      } catch (error) {
+        console.error(error);
       }
     },
-  },
-
+  }
 };
 </script>
 
@@ -273,5 +285,12 @@ export default {
 }
 .row.g-3{
   margin-bottom: 50px
+}
+.invalid-feedbacks{
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: .875em;
+  color: var(--bs-form-invalid-color);
+
 }
 </style>

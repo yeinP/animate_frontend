@@ -1,8 +1,13 @@
 <template>
   <div class="card shadow-sm">
     <div class="card-body1">
-      {{adoptionReview.arNo}}
-      <div class="title">{{ adoptionReview.arTitle }}</div>
+      <div class="tiNi">
+        <div class="title">{{ adoptionReview.arTitle }}</div>
+        <div class="user">
+          <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+          <span>{{adoptionReview.userNickName}}</span>
+        </div>
+      </div>
       <div class="date">{{formattedDate}}</div>
     </div>
     <div class="bd-placeholder-img card-img-top" width="100%" height="225">
@@ -13,7 +18,7 @@
       </div>
     </div>
     <div class="card-body">
-      <p class="card-text">{{adoptionReview.arContent}}</p>
+      <p class="card-text" @click="goArticle(adoptionReview)" style="cursor: pointer">{{ truncateText(adoptionReview.arContent, 30) }}</p>
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
           <button type="button" class="btn btn-sm btn-outline-secondary" @click="clickLike(adoptionReview.arNo)">
@@ -21,9 +26,7 @@
             <div v-else><i class="fa fa-heart" aria-hidden="true"></i><span>좋아요</span></div>
 
           </button>
-
-          <span>{{ likeCount }}</span>
-          <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fa fa-commenting-o" aria-hidden="true"></i>댓글보기</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" @click="goArticle(adoptionReview)"><i class="fa fa-commenting-o" aria-hidden="true"></i>댓글보기</button>
         </div>
       </div>
     </div>
@@ -59,36 +62,32 @@ export default {
   },
   data(){
     return{
-      likeCount: 0,
       lStatus: 'N'
     }
   },
   mounted() {
-    this.getLikesCount(this.adoptionReview.arNo);
     this.checkLikeStatus(this.adoptionReview.arNo);
   },
   methods:{
+    truncateText(text, length) {
+      if (text.length > length) {
+        return text.substring(0, length) + ' ...더보기';
+      } else {
+        return text;
+      }
+    },
     getImagesForAdoptionReview(arNo) {
      const rawArray = toRaw(this.arImgList);
       const filteredImages = rawArray.filter((arImg) => arImg.arNo == arNo);
 
       return filteredImages;
     },
-    async getLikesCount(arNo){
-      try {
-        const response = await fetch(`/animate/adoption/review/likecount/${arNo}`);
-        const data = await response.json();
-        this.likeCount = data;
-      } catch (error) {
-        console.error("Error fetching likes count:", error);
-      }
-    },
     async toggleLike(arNo) {
       if (this.userNo) {
         try {
           const response = await axios.post(`/animate/adoption/review/like?arNo=${arNo}`, null);
           if (response.status === 200) {
-            await this.getLikesCount(arNo);
+            window.location.reload();
           } else {
             console.error("Failed to add like");
           }
@@ -108,11 +107,6 @@ export default {
         const response = await axios.get(`/animate/adoption/review/like/${arNo}`);
         console.log(response.data);
         this.lStatus = response.data;
-        // if (response.data && response.data.likeStatus === 'Y') {
-        //   this.lStatus = 'Y';
-        // } else {
-        //   this.lStatus = 'N';
-        // }
       } catch (error) {
         console.error("Error checking like status:", error);
       }
@@ -120,6 +114,15 @@ export default {
     async clickLike(arNo) {
       await this.toggleLike(arNo);
     },
+    goArticle(adoptionReview){
+      router.push({
+        name: 'AdoptionArticle',
+        params:{arNo:adoptionReview.arNo}
+      });
+
+
+    }
+
   }
 }
 </script>
@@ -135,6 +138,7 @@ export default {
 }
 
 .card-body1{
+  align-items: flex-end;
   flex: 1 1 auto;
   padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
   color: var(--bs-card-color);
@@ -170,6 +174,22 @@ export default {
 /* 스크롤바가 트랙을 가리키는 부분의 스타일링 */
 ::-webkit-scrollbar-track {
   background-color: #ffffff; /* 스크롤바 트랙의 색상 */
+}
+
+.title{
+  font-weight: bolder;
+  font-size:20px;
+}
+
+.user{
+  display: flex;
+  align-items: center;
+  color:#6b6b6b;
+  font-size:15px;
+}
+.user i{
+  margin: 0 5px 0 0;
+  font-size:18px;
 }
 
 
