@@ -7,6 +7,7 @@ import RegisterStep1 from "@/pages/register/RegisterStep1.vue";
 import RegisterStep2 from "@/pages/register/RegisterStep2.vue";
 import Adoption from "@/pages/Adoption.vue";
 import Miss from "@/pages/miss_report/Miss.vue";
+import Mypage from "@/pages/Mypage.vue";
 
 
 
@@ -19,6 +20,8 @@ const routes = [
     {path: '/register/step2', component: RegisterStep2},
     {path: '/animal/miss_care', component: Miss},
     {path: '/adoption', component: Adoption},
+    {path: '/mypage', component: Mypage},
+
 
 ]
 const router = createRouter({

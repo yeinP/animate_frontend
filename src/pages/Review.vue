@@ -106,7 +106,6 @@ export default {
       axios.get('http://localhost:9090/adoption/review/imgList')
           .then((response) => {
             this.arImgList = response.data;
-            console.log(response.data);
           }).catch((error)=>{
         console.error("Img데이터 오류" , error);
       })
@@ -130,7 +129,6 @@ export default {
       axios.get('http://localhost:9090/adoption/review/list')
           .then((response) => {
             this.arList = response.data;
-            console.log(response.data);
             this.totalPages = Math.ceil(this.arList.length / this.itemsPerPage);
             if (this.currentPage > this.totalPages) {
               this.currentPage = this.totalPages;

@@ -4,40 +4,81 @@
   <Footer />
 </template>
 
+<!--<script>-->
+
+
+<!--import Header from "@/components/Header.vue";-->
+<!--import Footer from "@/components/Footer.vue";-->
+<!--import store from "@/scrpits/store";-->
+<!--import {useRoute} from "vue-router";-->
+<!--import axios from "axios";-->
+<!--import {watch} from "vue";-->
+
+
+<!--export default {-->
+<!--  name: 'App',-->
+<!--  components: {-->
+<!--    Footer,-->
+<!--    Header,-->
+
+<!--  },-->
+<!--  setup(){-->
+<!--    const check = () => {-->
+<!--      axios.get("/animate/user/check").then(({data})=>{-->
+<!--        console.log(data);-->
+
+<!--        store.commit("setUser",data || 0 );-->
+<!--      })-->
+<!--    };-->
+<!--   const route = useRoute();-->
+<!--   watch(route,() => {-->
+<!--     check();-->
+<!--   })-->
+<!--  }-->
+<!--}-->
+<!--</script>-->
 <script>
-
-
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import store from "@/scrpits/store";
-import {useRoute} from "vue-router";
+import { onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
 import axios from "axios";
-import {watch} from "vue";
-
 
 export default {
   name: 'App',
   components: {
     Footer,
     Header,
-
   },
-  setup(){
-    const check = () => {
-      axios.get("/animate/user/check").then(({data})=>{
+  //
+  setup() {
+    const checkUserStatus = async () => {
+      try {
+        const response = await axios.get("/animate/user/check");
+        const data = response.data;
         console.log(data);
-
-        store.commit("setUser",data || 0 );
-      })
+        store.commit("setUser", data || 0);
+      } catch (error) {
+        console.error("Failed to fetch user status:", error);
+        // 오류 처리: 네트워크 요청 실패 시 사용자 상태를 적절히 처리합니다.
+        store.commit("setUser", 0);
+      }
     };
-   const route = useRoute();
-   watch(route,() => {
-     check();
-   })
+
+    const route = useRoute();
+
+    onMounted(() => {
+      checkUserStatus(); // 컴포넌트가 마운트된 후에 사용자 상태를 확인합니다.
+    });
+
+    // 라우터 변경을 감지하고 사용자 상태를 확인합니다.
+    watch(route, () => {
+      checkUserStatus();
+    });
   }
 }
 </script>
-
 <style>
 .bd-placeholder-img {
   font-size: 1.125rem;

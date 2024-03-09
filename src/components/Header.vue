@@ -7,8 +7,10 @@
         <div class="col-4 text-center">
         </div>
         <div class="col-4 d-flex justify-content-end align-items-center">
-          <router-link to="/login" class="btn btn-sm" v-if="!userNo">로그인</router-link>
-          <router-link to="/register/step1" class="btn btn-sm" v-if="!userNo">회원가입</router-link>
+          <div  v-if="!userNo">
+          <router-link to="/login" class="btn btn-sm">로그인</router-link>
+          <router-link to="/register/step1" class="btn btn-sm">회원가입</router-link>
+          </div>
           <div v-else>
             <router-link to="/login" class="btn btn-sm" @click="logout" >로그아웃</router-link>
             <router-link to="/mypage" class="btn btn-sm">마이페이지</router-link>
@@ -47,7 +49,8 @@ export default {
     const logout =() => {
       store.commit('setUser', 0);
       sessionStorage.removeItem("userNo");
-      router.push({path:'/'})
+      router.push({path:'/'});
+      document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     }
     onMounted(()=>{
       store.watch(()=> store.state.user.userNo,(newValue) =>{

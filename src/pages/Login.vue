@@ -41,7 +41,6 @@ export default {
     const submit =() => {
       axios.post("/animate/user/login", state.form).then((res)=>{
         store.commit('setUser', res.data);
-        console.log(res.data);
         sessionStorage.setItem("userNo", res.data);
         router.push({path:'/'});
         window.alert("로그인  완료")

@@ -16,8 +16,14 @@
       <p class="card-text">{{adoptionReview.arContent}}</p>
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
-          <button type="button" class="btn btn-sm btn-outline-secondary">좋아요</button>
-          <button type="button" class="btn btn-sm btn-outline-secondary">댓글보기</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" @click="clickLike(adoptionReview.arNo)">
+            <div v-if="lStatus == 'N' || lStatus == null"><i class="fa fa-heart-o" aria-hidden="true" ></i><span>좋아요</span></div>
+            <div v-else><i class="fa fa-heart" aria-hidden="true"></i><span>좋아요</span></div>
+
+          </button>
+
+          <span>{{ likeCount }}</span>
+          <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fa fa-commenting-o" aria-hidden="true"></i>댓글보기</button>
         </div>
       </div>
     </div>
@@ -28,7 +34,10 @@
 
 <script>
 import moment from "moment/moment";
-import {toRaw} from "vue";
+import { onMounted, ref, toRaw} from "vue";
+import axios from "axios";
+import router from "@/scrpits/router";
+import store from "@/scrpits/store";
 
 
 export default {
@@ -39,13 +48,24 @@ export default {
       return moment(this.adoptionReview.arRegdate).format('YYYY.MM.DD');
     }
   },
+  setup(){
+    const userNo = ref(store.state.user.userNo);
+    onMounted(()=>{
+      store.watch(()=> store.state.user.userNo,(newValue) =>{
+        userNo.value = newValue;
+      });
+    });
+    return { userNo };
+  },
   data(){
     return{
-
+      likeCount: 0,
+      lStatus: 'N'
     }
   },
   mounted() {
-
+    this.getLikesCount(this.adoptionReview.arNo);
+    this.checkLikeStatus(this.adoptionReview.arNo);
   },
   methods:{
     getImagesForAdoptionReview(arNo) {
@@ -54,7 +74,52 @@ export default {
 
       return filteredImages;
     },
-
+    async getLikesCount(arNo){
+      try {
+        const response = await fetch(`/animate/adoption/review/likecount/${arNo}`);
+        const data = await response.json();
+        this.likeCount = data;
+      } catch (error) {
+        console.error("Error fetching likes count:", error);
+      }
+    },
+    async toggleLike(arNo) {
+      if (this.userNo) {
+        try {
+          const response = await axios.post(`/animate/adoption/review/like?arNo=${arNo}`, null);
+          if (response.status === 200) {
+            await this.getLikesCount(arNo);
+          } else {
+            console.error("Failed to add like");
+          }
+        } catch (error) {
+          console.error("Error adding like:", error);
+        }
+      } else {
+        const loginAlert = confirm("로그인 후 가능합니다.");
+        if (loginAlert) {
+          await router.push({ path: '/login' });
+        }
+        console.error('userNo is null');
+      }
+    },
+    async checkLikeStatus(arNo) {
+      try {
+        const response = await axios.get(`/animate/adoption/review/like/${arNo}`);
+        console.log(response.data);
+        this.lStatus = response.data;
+        // if (response.data && response.data.likeStatus === 'Y') {
+        //   this.lStatus = 'Y';
+        // } else {
+        //   this.lStatus = 'N';
+        // }
+      } catch (error) {
+        console.error("Error checking like status:", error);
+      }
+    },
+    async clickLike(arNo) {
+      await this.toggleLike(arNo);
+    },
   }
 }
 </script>

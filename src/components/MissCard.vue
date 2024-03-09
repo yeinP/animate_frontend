@@ -34,11 +34,22 @@
 import moment from "moment";
 import MissCareModal from "@/components/MissCareModal.vue";
 import axios from "axios";
+import {onMounted, ref} from "vue";
+import store from "@/scrpits/store";
 
 export default {
 name:"MissCard",
   props:['missCare'],
   components:{MissCareModal},
+  setup(){
+    const userNo = ref(store.state.user.userNo);
+    onMounted(()=>{
+      store.watch(()=> store.state.user.userNo,(newValue) =>{
+        userNo.value = newValue;
+      });
+    });
+    return { userNo };
+  },
   data(){
     return {
       showModal: false,
