@@ -9,6 +9,8 @@ import Adoption from "@/pages/Adoption.vue";
 import Miss from "@/pages/miss_report/Miss.vue";
 import Mypage from "@/pages/Mypage.vue";
 import AdoptionArticle from "@/pages/AdoptionReview/AdoptionArticle.vue";
+import Notice from "@/pages/notice/Notice.vue";
+import NoticeWrite from "@/pages/notice/NoticeWrite.vue";
 
 
 
@@ -23,6 +25,8 @@ const routes = [
     {path: '/adoption', component: Adoption},
     {path: '/mypage', component: Mypage},
     { path: '/adoption/article/:arNo', name: 'AdoptionArticle', component: AdoptionArticle },
+    { path: '/notice', name: 'Notice', component: Notice },
+    { path: '/notice/write', name: 'NoticeWrite', component: NoticeWrite },
 
 
 ]

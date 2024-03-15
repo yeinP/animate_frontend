@@ -12,10 +12,9 @@
             <img src="/img/home/main1.jpg" class="car-img">
             <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="rgba(204,204,102)"/></svg>
             <div class="container">
-              <div class="carousel-caption text-start">
-                <h1>Example headline.</h1>
-                <p class="opacity-75">Some representative placeholder content for the first slide of the carousel.</p>
-                <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
+              <div class="carousel-caption text-start" style="font-family: 'Gamja Flower', sans-serif;">
+                <h1>Animate</h1>
+                <p class="opacity-75">Animate는 유기견 및 유기묘 등 다양한 유기동물 아이들과 함께합니다.</p>
               </div>
             </div>
           </div>
@@ -23,10 +22,9 @@
             <img src="/img/home/main2.jpg" class="car-img">
             <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="rgba(204,204,102)"/></svg>
             <div class="container">
-              <div class="carousel-caption">
-                <h1>Another example headline.</h1>
-                <p>Some representative placeholder content for the second slide of the carousel.</p>
-                <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
+              <div class="carousel-caption" style="font-family: 'Gamja Flower', sans-serif;">
+                <h1>같이</h1>
+                <p>아이들과 같이 살아가요</p>
               </div>
             </div>
           </div>
@@ -34,10 +32,9 @@
             <img src="/img/home/main3.jpg" class="car-img">
             <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="rgba(204,204,102)"/></svg>
             <div class="container">
-              <div class="carousel-caption text-end">
-                <h1>One more for good measure.</h1>
-                <p>Some representative placeholder content for the third slide of this carousel.</p>
-                <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+              <div class="carousel-caption text-end" style="font-family: 'Gamja Flower', sans-serif;">
+                <h1>행복</h1>
+                <p>행복한 순간을 함께 만들어가요</p>
               </div>
             </div>
           </div>
@@ -322,5 +319,8 @@ export default {
 </script>
 
 <style scoped>
-
+.btn{
+  --bs-btn-active-bg: #c7c508;
+  --bs-btn-active-border-color:  #c7c508;
+}
 </style>

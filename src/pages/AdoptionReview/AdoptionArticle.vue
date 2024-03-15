@@ -22,7 +22,7 @@
             <span>{{articleInfo.userNickname}}</span>
             <span class="date">{{formattedDate}}</span>
             </div>
-            <span><i class="fa fa-heart" aria-hidden="true" style="color: orangered"></i>{{ likeCount }}</span>
+            <span><i class="fa fa-heart" aria-hidden="true" style="color: orangered" :likeCount = "likeCount"></i>{{ likeCount }}</span>
           </div>
         </div>
       </div>

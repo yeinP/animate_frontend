@@ -11,77 +11,119 @@
               <div class="col-12">
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
-                  <input type="text" class="form-control" v-model="userId" placeholder="아이디" required :class="{ 'is-invalid': !userIdRules[0](userId) }">
-                  <div class="invalid-feedbacks">
-                    {{ userIdRules[0](userId) || '' }}
+                 <input type="text" class="form-control" v-model="userId" placeholder="아이디" required :class="{ 'is-invalid': !userIdRules[0](userId) }">
+                  <div class="input-group-text">
+                    <button @click="checkDuplicateId" class="dup">중복 검사</button>
+                    <i v-if="userIdExist  == false" class="fa fa-check-circle text-success" aria-hidden="true"></i>
                   </div>
                 </div>
+                <div class="input-group-texts">
+                  <div>
+                    <i v-if="userId && userIdRules[0](userId) == true" class="fa fa-check-circle text-success" aria-hidden="true"></i>
+                    <span>아이디를 입력해주세요</span>
+                  </div>
 
+                </div>
               </div>
-
-
               <div class="col-12">
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   <input type="password" class="form-control" v-model="userPassword" placeholder="비밀번호" required :rules="userPasswordRules">
-
-                  <div class="invalid-feedbacks">
-                    <span v-for="rule in userPasswordRules" :key="rule">
-                      {{ rule(userPassword) || `Rule error: ${rule(userPassword)}` }}
-                    </span>
-                  </div>
                 </div>
+                  <div class="input-group-texts">
+                    <div>
+                      <i v-if="userPassword && userPasswordRules[0](userPassword) == true" class="fa fa-check-circle text-success" aria-hidden="true"></i>
+                      <span>비밀번호를 입력해주세요</span>
+                    </div>
+                    <div>
+                    <i v-if="userPassword && userPasswordRules[1](userPassword) == true" class="fa fa-check-circle text-success" aria-hidden="true"></i>
+                    <span> 비밀번호는 5~12글자의 숫자 및 특수문자를 포함해야합니다.</span>
+                    </div>
+                  </div>
+
               </div>
+
               <div class="col-12">
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
                   <input type="password" class="form-control" v-model="userPasswordCheck" placeholder="비밀번호 확인" :rules="passwordCheckRules.concat(passwordConfirmationRule)" required>
-
-                  <div class="invalid-feedbacks">
-                    {{ passwordCheckRules[0](userPasswordCheck) || '' }}
-                  </div>
                 </div>
+                  <div class="input-group-texts" v-if="userPasswordCheck.length > 0">
+                    <div v-if="userPasswordCheck && userPassword === userPasswordCheck">
+                      <i class="fa fa-check-circle text-success" aria-hidden="true"></i>
+                      <span>비밀번호가 일치합니다.</span>
+                    </div>
+                    <div v-else >
+                      <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
+                      <span>비밀번호가 일치하지 않습니다.</span>
+                    </div>
+                  </div>
+
               </div>
+
+
               <div class="col-12">
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa fa-id-card" aria-hidden="true"></i></span>
                   <input type="text" class="form-control" v-model="userName" placeholder="이름" required :rules="userNameRules">
-                  <div class="invalid-feedbacks">
-                    {{ userNameRules[0](userName) || '' }}
-                  </div>
                 </div>
+                  <div class="input-group-texts">
+                    <div>
+                      <i v-if="userName && userNameRules[0](userName)  == true" class="fa fa-check-circle text-success" aria-hidden="true"></i>
+                      <span>이름을 입력해주세요</span>
+                    </div>
+                  </div>
+
               </div>
 
               <div class="col-12">
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa fa-user-plus" aria-hidden="true"></i></span>
                   <input type="text" class="form-control" v-model="userNickname" placeholder="닉네임" required :rules="nicknameRules">
-                  <div class="invalid-feedbacks">
-                    <span v-for="rule in nicknameRules" :key="rule">{{ rule(userNickname) || '' }}</span>
+                  <div class="input-group-text">
+                    <button @click="checkDuplicateNickname"  class="dup">중복 검사</button>
+                    <i v-if="userNicknameExist  == false" class="fa fa-check-circle text-success" aria-hidden="true"></i>
                   </div>
                 </div>
+                  <div class="input-group-texts">
+                    <div>
+                      <i v-if="userNickname && nicknameRules[0](userNickname) == true" class="fa fa-check-circle text-success" aria-hidden="true"></i>
+                      <span>닉네임을 입력해주세요.</span>
+                    </div>
+                    <div>
+                      <i v-if="userNickname && nicknameRules[1](userNickname) == true" class="fa fa-check-circle text-success" aria-hidden="true"></i>
+                      <span> 닉네임은 10글자 이내로 작성해주세요</span>
+                    </div>
+                  </div>
+
               </div>
               <div class="col-12">
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa fa-phone" aria-hidden="true"></i></span>
-                  <input type="text" class="form-control" v-model="userPhone" placeholder="전화번호" required :rules="userPhoneRules">
-                  <div class="invalid-feedbacks">
-                    <span v-for="rule in userPhoneRules" :key="rule">{{ rule(userPhone) || '' }}</span>
+                  <input type="text" class="form-control" v-model="userPhone" placeholder="01012345678" required :rules="userPhoneRules">
+                </div>
+                <div class="input-group-texts">
+                  <div>
+                    <i v-if="userPhone && userPhoneRules[0](userPhone) == true" class="fa fa-check-circle text-success" aria-hidden="true"></i>
+                    <span>전화번호는 숫자 11자리로 입력해주세요.</span>
                   </div>
+
                 </div>
               </div>
 
               <div class="col-12">
                 <div class="input-group has-validation">
                   <span class="input-group-text"><i class="fa  fa-envelope-o" aria-hidden="true"></i></span>
-                  <input type="text" class="form-control" v-model="userEmail" placeholder="[선택] 이메일" :rules="emailRules">
-                  <div class="invalid-feedbacks">
-                    {{ emailRules[0](userEmail) || '' }}
-                  </div>
+                  <input type="text" class="form-control" v-model="userEmail" placeholder="[선택] example@google.com" :rules="emailRules">
                 </div>
+                  <div v-if="userEmail.length > 0" class="input-group-texts">
+                    <i v-if="userEmail && emailRules[0](userEmail) == true" class="fa fa-check-circle text-success" aria-hidden="true"></i>
+                    <span>이메일 형식으로 작성해주세요.</span>
+                  </div>
+
               </div>
             </div>
-            <button class="w-100 btn btn-primary btn-lg"  @click.prevent="signUpSubmit">로그인</button>
+            <button class="w-100 btn btn-primary btn-lg"  @click.prevent="signUpSubmit">회원가입</button>
           </div>
         </div>
       </div>
@@ -97,6 +139,8 @@ export default {
   data() {
 
     return {
+      userIdExist: true,
+      userNicknameExist:true,
       userDto: {
         userId: null,
         userPassword: null,
@@ -104,21 +148,19 @@ export default {
         userNickname: null,
         userPhone: null,
         userEmail: null,
+
       },
       userId: "",
       userIdRules: [
         (v) => {
           const isValid = (v !== undefined && v !== null && v.trim() !== '');
-          console.log('userIdRules:', isValid);
           return isValid || '아이디를 작성해주세요';
         },
       ],
       userPassword: "",
       userPasswordRules: [
         (v) => !!v ||  '비밀번호를 작성해주세요',
-        (v) => (v && v.length >= 5) ||  '5글자 이상 작성해주세요',
-        (v) => /(?=.*\d)/.test(v) ||  '숫자를 포함해야합니다',
-        (v) => /([!@$%])/.test(v) || '특수문자를 포함해야합니다 [!@#$%]',
+        (v) => (v && v.length >= 5 && v.length<=12) &&  /(?=.*\d)/.test(v) && /([!@$%*#^&?])/.test(v) ||  ' (5~12글자, 숫자 및 특수문자를 포함해야합니다.)',
       ],
       userPasswordCheck: "",
       passwordCheckRules: [
@@ -132,16 +174,15 @@ export default {
       userNickname: "",
       nicknameRules: [
         (v) => !!v || '닉네임을 작성해주세요',
-        (v) => (v && v.length <= 10) || '닉네임을 10글자를 넘을 수 없습니다.',
+        (v) => (v && v.length <= 10) || '닉네임은 10글자를 넘을 수 없습니다.',
       ],
       userPhone: "",
       userPhoneRules: [
-        (v) => !!v || '전화번호를 작성해주세요',
-        (v) => (v && /^\d{11}$/.test(v)) || '숫자 11자리로 입력해주세요',
+        (v) => !!v &&  (v && /^\d{11}$/.test(v) )|| '전화번호를 숫자 11자리로 작성해주세요',
       ],
       userEmail: "",
       emailRules: [
-        (v) => /.+@.+\..+/.test(v) || "이메일 형식으로 작성해주세요",
+        (v) => v.length > 0 && /.+@.+\..+/.test(v) || "이메일 형식으로 작성해주세요",
       ],
 
 
@@ -159,6 +200,18 @@ export default {
   },
   methods: {
     signUpSubmit() {
+      if (
+          !this.userId ||
+          !this.userPassword ||
+          !this.userPasswordCheck ||
+          !this.userName ||
+          !this.userNickname ||
+          !this.userPhone
+      ) {
+        alert("모든 필수 항목을 입력해주세요.");
+        return;
+      }
+
       const regData = {
         userId:this.userId,
         userPassword:this.userPassword,
@@ -191,11 +244,47 @@ export default {
         console.error(error);
       }
     },
+    checkDuplicateId() {
+      axios.post("/animate/user/duplicateUserId", { userId: this.userId })
+          .then(response => {
+            if (response.data === "true") {
+              alert("이미 사용 중인 아이디입니다.");
+              this.userIdExist = true;
+            } else {
+              alert("사용 가능한 아이디입니다.");
+              this.userIdExist = false;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+    checkDuplicateNickname() {
+      axios.post("/animate/user/duplicateUserNickname", { userNickname: this.userNickname })
+          .then(response => {
+            if (response.data === "true") {
+              alert("이미 사용 중인 닉네임입니다.");
+              this.userNicknameExist = true;
+            } else {
+              alert("사용 가능한 닉네임입니다.");
+              this.userNicknameExist = false;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+
+
   }
 };
 </script>
 
 <style scoped>
+.dup{
+  border: 0;
+  background-color: #99000000;
+}
 .content{
   width: 768px;
   margin:auto;
@@ -292,5 +381,9 @@ export default {
   font-size: .875em;
   color: var(--bs-form-invalid-color);
 
+}
+.input-group-texts{
+  font-size: 13px;
+  padding: 5px 0 0 5px;
 }
 </style>

@@ -51,7 +51,7 @@
 <script>
 export default {
   name:'AdoptionCard',
-  props:['animal'],
+  props:['animal' , 'likeCount'],
   computed:{
 
   }

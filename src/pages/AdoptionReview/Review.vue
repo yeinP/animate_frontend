@@ -31,7 +31,7 @@
         </div>
         <div class="card-body">
           <div>
-            <textarea type="text" style="width: 100%; height: 150px;" placeholder="내용을 작성해 주세요" v-model="arContent" class="arContent" @keyup.enter="handleEnter"></textarea>
+            <textarea type="text" style="width: 100%; height: 150px;" placeholder="내용을 작성해 주세요" v-model="arContent" class="arContent"></textarea>
           </div>
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
@@ -66,6 +66,7 @@ export default {
   components: {ReviewCard},
   data(){
     return {
+      likeCount: 0,
       showModal: false,
       arTitle:"",
       selectedFiles: [],
