@@ -50,60 +50,13 @@
       </div>
 
     </div>
-
-    <div class="row mb-3">
-      <div class="col-md-4">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-          <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary-emphasis">World</strong>
-            <h3 class="mb-0">Featured post</h3>
-            <div class="mb-1 text-body-secondary">Nov 12</div>
-            <p class="card-text mb-auto"></p>
-            <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
-              Continue reading
-              <svg class="bi"><use xlink:href="#chevron-right"/></svg>
-            </a>
-          </div>
-          <div class="col-auto d-none d-lg-block">
-            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-          <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-success-emphasis">Design</strong>
-            <h3 class="mb-0">Post title</h3>
-            <div class="mb-1 text-body-secondary">Nov 11</div>
-            <p class="mb-auto"></p>
-            <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
-              Continue reading
-              <svg class="bi"><use xlink:href="#chevron-right"/></svg>
-            </a>
-          </div>
-          <div class="col-auto d-none d-lg-block">
-            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-success-emphasis">Design</strong>
-          <h3 class="mb-0">Post title</h3>
-          <div class="mb-1 text-body-secondary">Nov 11</div>
-          <p class="mb-auto"></p>
-          <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
-            Continue reading
-            <svg class="bi"><use xlink:href="#chevron-right"/></svg>
-          </a>
-        </div>
-        <div class="col-auto d-none d-lg-block">
-          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-        </div>
-      </div>
+    <div class="recent">
+      <span>최근 올라온 실종/제보</span>
     </div>
-
+    <div class="row mb-3">
+      <div class="col-md-4" v-for="(recentmc, index) in displayedMissCareList" :key="index">
+        <RecentMC :recentmc="recentmc" />
+      </div>
     </div>
 
     <div class="row g-5">
@@ -238,67 +191,17 @@
         <div class="position-sticky" style="top: 2rem;">
           <div class="p-4 mb-3 bg-body-tertiary rounded">
             <h4 class="fst-italic">About</h4>
-            <p class="mb-0">Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you.</p>
+            <p class="mb-0">유기동물과 함께할 반려인을 기다립니다.</p>
+            <p>잃어버린 아이들의 반려인을 찾아주세요.</p>
           </div>
 
           <div>
-            <h4 class="fst-italic">Recent posts</h4>
+            <h4 class="fst-italic">인기 입양 후기</h4>
             <ul class="list-unstyled">
-              <li>
-                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="#">
-                  <svg class="bd-placeholder-img" width="100%" height="96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-                  <div class="col-lg-8">
-                    <h6 class="mb-0">Example blog post title</h6>
-                    <small class="text-body-secondary">January 15, 2023</small>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="#">
-                  <svg class="bd-placeholder-img" width="100%" height="96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-                  <div class="col-lg-8">
-                    <h6 class="mb-0">This is another blog post title</h6>
-                    <small class="text-body-secondary">January 14, 2023</small>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="#">
-                  <svg class="bd-placeholder-img" width="100%" height="96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-                  <div class="col-lg-8">
-                    <h6 class="mb-0">Longer blog post title: This one has multiple lines!</h6>
-                    <small class="text-body-secondary">January 13, 2023</small>
-                  </div>
-                </a>
+              <li v-for="(review, index) in bestReviewList" :key="review.arNo">
+                <Top3Review :bestReview = "review" :index = "index"/>
               </li>
             </ul>
-          </div>
-
-          <div class="p-4">
-            <h4 class="fst-italic">Archives</h4>
-            <ol class="list-unstyled mb-0">
-              <li><a href="#">March 2021</a></li>
-              <li><a href="#">February 2021</a></li>
-              <li><a href="#">January 2021</a></li>
-              <li><a href="#">December 2020</a></li>
-              <li><a href="#">November 2020</a></li>
-              <li><a href="#">October 2020</a></li>
-              <li><a href="#">September 2020</a></li>
-              <li><a href="#">August 2020</a></li>
-              <li><a href="#">July 2020</a></li>
-              <li><a href="#">June 2020</a></li>
-              <li><a href="#">May 2020</a></li>
-              <li><a href="#">April 2020</a></li>
-            </ol>
-          </div>
-
-          <div class="p-4">
-            <h4 class="fst-italic">Elsewhere</h4>
-            <ol class="list-unstyled">
-              <li><a href="#">GitHub</a></li>
-              <li><a href="#">Twitter</a></li>
-              <li><a href="#">Facebook</a></li>
-            </ol>
           </div>
         </div>
       </div>
@@ -311,8 +214,59 @@
 
 
 
+import RecentMC from "@/components/home/RecentMC.vue";
+import axios from "axios";
+import Top3Review from "@/components/home/Top3Review.vue";
+
 export default {
   name: "Home",
+  components: {
+    RecentMC,
+    Top3Review,
+  },
+  data(){
+    return{
+      missCareList:[],
+      bestReviewList:[],
+    }
+  },
+  computed:{
+    displayedMissCareList() {
+      return this.missCareList.slice(0, 3);
+    },
+
+  },
+  mounted() {
+
+  },
+  created() {
+    this.getMissCareDtoList();
+    this.getBestReview()
+  },
+  methods:{
+    getMissCareDtoList(){
+      axios.get('http://localhost:9090/animal/miss_care')
+          .then((response) => {
+            this.missCareList = response.data;
+
+          })
+          .catch((error) => {
+            console.error('데이터를 가져오는 중 오류 발생:', error);
+          });
+    },
+    getBestReview(){
+      axios.get('http://localhost:9090/home/review/best')
+          .then((response) => {
+            this.bestReviewList = response.data;
+            console.log(response.data);
+
+          })
+          .catch((error) => {
+            console.error('데이터를 가져오는 중 오류 발생:', error);
+          });
+    },
+
+  },
 
 }
 
@@ -322,5 +276,15 @@ export default {
 .btn{
   --bs-btn-active-bg: #c7c508;
   --bs-btn-active-border-color:  #c7c508;
+}
+.recent{
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 1.5rem;
+  font-weight: 500;
+}
+.fst-italic{
+  font-weight: bold;
+  font-size: 20px;
 }
 </style>

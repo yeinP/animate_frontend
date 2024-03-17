@@ -38,8 +38,8 @@
 <!--}-->
 <!--</script>-->
 <script>
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
+import Header from "@/components/home/Header.vue";
+import Footer from "@/components/home/Footer.vue";
 import store from "@/scrpits/store";
 import { onMounted, watch } from "vue";
 import { useRoute } from "vue-router";

@@ -32,10 +32,11 @@
 
 <script>
 import moment from "moment";
-import MissCareModal from "@/components/MissCareModal.vue";
+import MissCareModal from "@/components/missCare/MissCareModal.vue";
 import axios from "axios";
 import {onMounted, ref} from "vue";
 import store from "@/scrpits/store";
+
 
 export default {
 name:"MissCard",
@@ -56,6 +57,7 @@ name:"MissCard",
       modalData:[],
       replyData:[],
       reReplyData:[],
+      missCareForModal: null
     }
   },
   computed:{

@@ -1,16 +1,19 @@
 import Home from "@/pages/Home.vue";
-import Login from "@/pages/Login.vue";
-import Review from "@/pages/AdoptionReview/Review.vue";
+
 import {createRouter, createWebHistory} from "vue-router";
-import ShelterInfo from "@/pages/ShelterInfo.vue";
-import RegisterStep1 from "@/pages/register/RegisterStep1.vue";
-import RegisterStep2 from "@/pages/register/RegisterStep2.vue";
-import Adoption from "@/pages/Adoption.vue";
+import Login from "@/pages/log/Login.vue";
+import Review from "@/pages/AdoptionReview/Review.vue";
+import ShelterInfo from "@/pages/adoption/ShelterInfo.vue";
+import RegisterStep1 from "@/pages/log/RegisterStep1.vue";
+import RegisterStep2 from "@/pages/log/RegisterStep2.vue";
 import Miss from "@/pages/miss_report/Miss.vue";
-import Mypage from "@/pages/Mypage.vue";
+import Adoption from "@/pages/adoption/Adoption.vue";
+import Mypage from "@/pages/log/Mypage.vue";
 import AdoptionArticle from "@/pages/AdoptionReview/AdoptionArticle.vue";
 import Notice from "@/pages/notice/Notice.vue";
 import NoticeWrite from "@/pages/notice/NoticeWrite.vue";
+import NoticeArticle from "@/pages/notice/NoticeArticle.vue";
+
 
 
 
@@ -24,9 +27,10 @@ const routes = [
     {path: '/animal/miss_care', component: Miss},
     {path: '/adoption', component: Adoption},
     {path: '/mypage', component: Mypage},
-    { path: '/adoption/article/:arNo', name: 'AdoptionArticle', component: AdoptionArticle },
+    { path: '/adoption/article/:arNo', name: 'AdoptionArticle', component: AdoptionArticle},
     { path: '/notice', name: 'Notice', component: Notice },
     { path: '/notice/write', name: 'NoticeWrite', component: NoticeWrite },
+    {path:  '/notice/:noticeNo', name:'NoticeArticle', component: NoticeArticle}
 
 
 ]

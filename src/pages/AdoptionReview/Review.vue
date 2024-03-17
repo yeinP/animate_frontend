@@ -58,7 +58,7 @@
 import router from "@/scrpits/router";
 import {onMounted, ref} from "vue";
 import store from "@/scrpits/store";
-import ReviewCard from "@/components/ReviewCard.vue";
+import ReviewCard from "@/components/review/ReviewCard.vue";
 import axios from "axios";
 
 export default {

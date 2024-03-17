@@ -149,6 +149,7 @@
     </div>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       <div class="col" v-for="missCare in paginatedMissCareList" :key="missCare.mcNo">
+
         <MissCard :missCare="missCare"/>
       </div>
     </div>
@@ -165,7 +166,7 @@
 <script>
 
 
-import MissCard from "@/components/MissCard.vue";
+import MissCard from "@/components/missCare/MissCard.vue";
 import axios from "axios";
 import {onMounted, ref} from "vue";
 import store from "@/scrpits/store";

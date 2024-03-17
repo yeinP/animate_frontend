@@ -60,7 +60,7 @@
 <script>
 
 import axios from "axios";
-import AdoptionCard from "@/components/AdoptionCard.vue";
+import AdoptionCard from "@/components/adoption/AdoptionCard.vue";
 
 export default {
   name: "Adoption",
