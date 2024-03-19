@@ -13,6 +13,7 @@ import AdoptionArticle from "@/pages/AdoptionReview/AdoptionArticle.vue";
 import Notice from "@/pages/notice/Notice.vue";
 import NoticeWrite from "@/pages/notice/NoticeWrite.vue";
 import NoticeArticle from "@/pages/notice/NoticeArticle.vue";
+import ShelterInfo123 from "@/pages/adoption/ShelterInfo123.vue";
 
 
 
@@ -22,6 +23,7 @@ const routes = [
     {path:'/login', component: Login },
     {path: '/review', component: Review},
     {path: '/sheltersInfo', component: ShelterInfo},
+    {path: '/sheltersInfo123', component: ShelterInfo123},
     {path: '/register/step1', component: RegisterStep1},
     {path: '/register/step2', component: RegisterStep2},
     {path: '/animal/miss_care', component: Miss},

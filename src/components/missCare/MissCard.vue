@@ -17,7 +17,7 @@
       </div>
       <div class="align-items-center d-flex justify-content-end">
 
-        <small class="text-body-secondary">{{missCare.mcLoc}}</small>
+        <small class="text-body-secondary">{{missCare.mcLoc}} {{missCare.mcLoc2}}</small>
         <i class="fa fa-map-marker"></i>
       </div>
       <div class="align-items-center d-flex justify-content-end">

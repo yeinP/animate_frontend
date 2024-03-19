@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <div class="shelters">
       <div class="shelters-list-content">
         <div class="search-bar">
@@ -14,7 +13,7 @@
         <div class="search-list">
           <div v-if="shouldShowResults">
             <div v-for="shelter in (searchText ? filteredShelters : shelters)" :key="shelter.careNm" class="shelter-info">
-              <div class="shelter-name" @click="moveToLocation(shelter.lat, shelter.lng, 3)">{{ shelter.careNm }}</div>
+              <div class="shelter-name" ><span @click="moveToLocation(shelter.lat, shelter.lng)">{{ shelter.careNm }}</span></div>
               <div class="shelter-details">
                 <div class="address">{{ shelter.careAddr }}</div>
                 <div class="phone">{{ shelter.careTel }}</div>
@@ -25,52 +24,49 @@
             <p>검색 결과가 없습니다.</p>
           </div>
         </div>
-      </div>
+
+    </div>
       <div id="map" class="shelters-map"></div>
     </div>
-  </div>
+    </div>
 </template>
 
 <script>
+
 export default {
-  data() {
-    return {
-      shelters: [],
-      map: null,
+  data(){
+    return{
+      shelters:[],
       markers: [],
       searchOption: 'careNm',
       searchText: "",
-      filteredShelters: [],
       shouldShowResults: true,
-    };
+    }
   },
   mounted() {
-    if (window.kakao && window.kakao.maps) {
+    if (window.naver && window.naver.maps) {
       this.initMap();
     } else {
       const script = document.createElement('script');
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=a717c9681b58a48a6742a436e7fdd2f2';
+      script.onload = this.initMap;
+      script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=yrqvx3kz7q`;
       document.head.appendChild(script);
     }
   },
   methods: {
-
-    //카카오 지도 띄움
-    async initMap() {
-      var mapContainer = document.getElementById('map');
-      var mapOption = {
-        center: new kakao.maps.LatLng(36.5, 127.5),
-        level: 12,
+    initMap() {
+      const mapOptions = {
+        center: new window.naver.maps.LatLng(36.3595704, 127.505399),
+        zoom: 8,
       };
-      this.map = new kakao.maps.Map(mapContainer, mapOption);
-      await this.fetchSheltersData();
+      this.map = new window.naver.maps.Map('map', mapOptions);
+      this.fetchSheltersData();
+      this.placeMarkers();
 
     },
-    //api 정보가져옴
     async fetchSheltersData() {
       try {
-        const response = await axios.get('http://apis.data.go.kr/1543061/animalShelterSrvc/shelterInfo?numOfRows=194&pageNo=1&serviceKey=aQc0i7nxPnLiQlZAS7cmLwlDZjOT3fdCdEI7XY2VzJP57%2BS1B6Djo1EeqOtJX0t7C%2B%2F3OQ4G7K5Eklk%2FZooJmw%3D%3D');
+        const response = await fetch('http://apis.data.go.kr/1543061/animalShelterSrvc/shelterInfo?numOfRows=194&pageNo=1&serviceKey=aQc0i7nxPnLiQlZAS7cmLwlDZjOT3fdCdEI7XY2VzJP57%2BS1B6Djo1EeqOtJX0t7C%2B%2F3OQ4G7K5Eklk%2FZooJmw%3D%3D');
         const xmlData = await response.text();
 
         const parser = new DOMParser();
@@ -86,52 +82,30 @@ export default {
             careTel: item.querySelector('careTel')?.textContent || '',
           };
         });
-
-        this.placeMarkers();
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     },
     placeMarkers() {
       this.shelters.forEach(shelter => {
-        const marker = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(shelter.lat, shelter.lng),
-        });
-        marker.setMap(this.map);
-        // this.markers.push(marker);
-      });
-    },
-    //병원이름 클릭시 위치이동
-    moveToLocation(lat, lng, level) {
-      const moveLatLon = new kakao.maps.LatLng(lat, lng);
-      this.map.setLevel(level,{animate:{duration: 500}})
-      this.map.panTo(moveLatLon);
-    },
-    //검색
-    filterShelters() {
-      const searchText = this.searchText;
-      const searchOption = this.searchOption;
-      this.filteredShelters = this.shelters.filter(shelter => {
-        const targetValue = shelter[searchOption];
-        return targetValue.includes(searchText);
-      });
-      this.shouldShowResults = this.filteredShelters.length > 0 && searchText !== '';
-    },
-    showMarkerForFilteredShelters(){
-      this.markers.forEach((marker => marker.setMap(null)));
-      this.filteredShelters.forEach(shleter => {
-        const marker = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(shleter.lat, shleter.lng),
-        });
-        marker.setMap(this.map);
+        const markerOptions = {
+          position: new naver.maps.LatLng(shelter.lat, shelter.lng),
+          map: this.map // 마커를 추가할 지도 객체 설정
+        };
+        const marker = new naver.maps.Marker(markerOptions);
         this.markers.push(marker);
+
       });
-    }
-  },
-
-
+    },
+    moveToLocation(lat, lng) {
+      const moveLatLon = new window.naver.maps.LatLng(lat, lng);
+      this.map.setZoom(12, true);
+      this.map.panToBounds(moveLatLon);
+    },
+  }
 };
 </script>
+
 
 <style>
 #map {
@@ -183,7 +157,7 @@ export default {
   display: flex;
   align-items: center;
   width: 432px;
-  //padding: 8px;
+//padding: 8px;
 }
 .search-barBtn{
   width: 90px;

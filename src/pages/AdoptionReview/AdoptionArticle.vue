@@ -1,19 +1,20 @@
 <template>
 <div class="container">
+  <div class="alter" v-if="isCurrentUserAuthor()">
+    <div class="text">
+      <button v-if="!isEditMode" @click="toggleEditMode">
+        수정
+      </button>
+      <button @click=" deleteArticleWithImages(articleInfo.arNo)">
+        삭제
+      </button>
+    </div>
+  </div>
   <div class="article">
       <div class="titleBox">
         <div style="display: flex;justify-content: space-between; align-items: center;">
         <div v-html="insertSpaceInText(articleInfo.arTitle)" class="tb"></div>
-          <div>
-            <div class="alter" v-if="isCurrentUserAuthor()">
-            <div class="text">
-              <button @click="editArArticle" style="font-size: 15px; border:0; background-color: white;">
-                <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"  ></i>
-              </button>
-              <span style="font-size: 15px;">수정</span>
-            </div>
-          </div>
-          </div>
+
         </div>
         <div>
           <div class="user">
@@ -28,7 +29,7 @@
       </div>
     <div class="imgList">
       <div v-for="img in articleInfo.adoptionReviewImgList" :key="img">
-        <img :src="img.arImgUrl" alt="Adoption Image"  class="img"/>
+        <img :src="img.arImgUrl" alt="Adoption Image"  class="img" id="img" />
       </div>
     </div>
     <div class="content">
@@ -136,6 +137,21 @@ export default {
     this.isCurrentUserAuthor();
   },
   methods:{
+    deleteImages() {
+      const fileNames = this.articleInfo.adoptionReviewImgList.map(img => {
+            return img.arImgUrl.substring(img.arImgUrl.lastIndexOf('/') + 1);
+      });
+      const fileNameString = fileNames.join(',');
+
+      axios.delete('/animate/delete/arImg', { fileName: fileNameString })
+          .then(() => {
+            console.log('이미지 삭제 완료');
+          })
+          .catch(error => {
+            console.error('이미지 삭제 오류:', error);
+          });
+    },
+
     isCurrentUserAuthor() {
       return this.articleInfo.userNo === this.userNo;
     },
@@ -263,6 +279,21 @@ export default {
         }
       });
     },
+    deleteNotice(arNo){
+      axios.post(`/animate/adoption/delete/${arNo}`, {
+        arNo: arNo // adoptionReview 객체에서 arNo 추출
+      })
+          .then(() => {
+            router.push({path:'/review'});
+          })
+          .catch(error => {
+            console.error("삭제 오류", error)
+          })
+    },
+    deleteArticleWithImages(arNo) {
+      this.deleteImages();
+      this.deleteNotice(arNo);
+    }
 
   }
 }

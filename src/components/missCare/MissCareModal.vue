@@ -39,31 +39,91 @@
             </colgroup>
             <tr>
               <td class="spanTitle">성별</td>
-              <td>{{ missCare.mcGender}}</td>
+              <td v-if="!isEditMode">{{ missCare.mcGender}}</td>
+              <td v-if="isEditMode">
+                <input type="text" v-bind:v-model="mcGneder" v-bind:value="missCare.mcGender"/>
+              </td>
             </tr>
             <tr>
               <td class="spanTitle">위치</td>
-              <td>{{ missCare.mcLoc }} {{ missCare.mcAddr }}</td>
+              <td v-if="!isEditMode">{{ missCare.mcLoc }} {{missCare.mcLoc2}} {{ missCare.mcAddr }}</td>
+              <td v-if="isEditMode">
+                <select v-bind:v-model="mcLoc" @change="fetchSigunguList" class="selectedLocOption1">
+                  <option  v-bind:value="missCare.mcLoc">{{ missCare.mcLoc }}</option>
+                  <option  v-bind:value="''">모든지역</option>
+                  <option v-for="sido in sidoList" :key="sido.orgCd"  v-bind:value="sido.orgCd" >
+                    {{ sido.orgdownNm }}
+                  </option>
+                </select>
+                <select v-bind:v-model="mcLoc2" class="selectedLocOption2">
+                  <option v-bind:value="missCare.mcLoc2">{{ missCare.mcLoc2 }}</option>
+                  <option v-bind:value="''">전체</option>
+                  <option v-for="sigungu in sigunguList" :key="sigungu.orgCd"  v-bind:value="sigungu.orgCd">
+                    {{ sigungu.orgdownNm }}
+                  </option>
+                </select>
+                <span>장소</span>
+                <input type="text" v-bind:v-model="mcAddr" v-bind:value="missCare.mcAddr"/>
+              </td>
             </tr>
             <tr>
               <td class="spanTitle">몸무게</td>
-              <td>{{displayWeight(missCare.mcWeight) }}</td>
+              <td v-if="!isEditMode">{{displayWeight(missCare.mcWeight) }}</td>
+              <td v-if="isEditMode">
+                <select v-bind:v-model="mcWeight" v-bind:value="missCare.mcWeight">
+                  <option value="99">미확인</option> <option value="0">1kg 미만</option> <option value="1">1kg</option>
+                  <option value="2">2kg</option> <option value="3">3kg</option> <option value="4">4kg</option>
+                  <option value="5">5kg</option> <option value="6">6kg</option> <option value="7">7kg</option>
+                  <option value="8">8kg</option> <option value="9">9kg</option> <option value="10">10kg</option>
+                  <option value="11">11kg</option> <option value="12">12kg</option>  <option value="13">13kg</option>
+                  <option value="14">14kg</option> <option value="15">15kg</option>  <option value="16">16kg</option>
+                  <option value="17">17kg</option> <option value="18">18kg</option>  <option value="19">19kg</option>
+                  <option value="20">20kg</option> <option value="21">21kg</option>  <option value="22">22kg</option>
+                  <option value="23">23kg</option> <option value="24">24kg</option>  <option value="25">25kg</option>
+                  <option value="26">20kg</option> <option value="27">27kg</option>  <option value="28">28kg</option>
+                  <option value="29">20kg</option> <option value="30">30kg</option>  <option value="31">30kg 이상</option>
+                </select>
+              </td>
             </tr>
             <tr>
               <td class="spanTitle">나이</td>
-              <td>{{displayAge(missCare.mcAge) }}</td>
+              <td v-if="!isEditMode">{{displayAge(missCare.mcAge) }}</td>
+              <select v-bind:v-model="mcAge" v-bind:value="missCare.mcAge" v-if="isEditMode">
+                <option value="99">미확인</option>
+                <option value="0">1살 이하</option>
+                <option value="1">1살</option>
+                <option value="2">2살</option>
+                <option value="3">3살</option>
+                <option value="4">4살</option>
+                <option value="5">5살</option>
+                <option value="6">6살</option>
+                <option value="7">7살</option>
+                <option value="8">8살</option>
+                <option value="9">9살</option>
+                <option value="10">10살</option>
+                <option value="11">10살 이상</option>
+              </select>
             </tr>
             <tr>
               <td class="spanTitle">털색</td>
-              <td>{{ missCare.mcColor }}</td>
+              <td  v-if="!isEditMode">{{ missCare.mcColor }}</td>
+              <td v-if="isEditMode">
+                <input type="text" v-bind:v-model="mcColor" v-bind:value="missCare.mcColor"/>
+              </td>
             </tr>
             <tr>
               <td class="spanTitle">특징</td>
-              <td>{{ missCare.mcChar }}</td>
+              <td  v-if="!isEditMode">{{ missCare.mcChar }}</td>
+              <td v-if="isEditMode">
+                <input type="text" v-bind:v-model="mcChar" v-bind:value="missCare.mcChar"/>
+              </td>
             </tr>
             <tr>
               <td class="spanTitle">기타</td>
-              <td>{{ missCare.mcEtc }}</td>
+              <td v-if="!isEditMode">{{ missCare.mcEtc }}</td>
+              <td v-if="isEditMode">
+                <input type="text" v-bind:v-model="mcEtc" v-bind:value="missCare.mcEtc"/>
+              </td>
             </tr>
             <tr>
               <td class="spanTitle">작성일</td>
@@ -75,12 +135,14 @@
       </div>
         <div class="alter" v-if="isCurrentUserAuthor()">
           <div class="text">
-            <button @click="editMissCare">
+            <button v-if="!isEditMode" @click="toggleEditMode">
               <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
             </button>
             <span>수정</span>
           </div>
         </div>
+
+        <button v-if="isEditMode" @click="saveChanges">저장</button>
         <div class="box">
           <div class="replyBox">
             <input type="text" class="reply" v-model="reply" placeholder="댓글을 작성해주세요">
@@ -148,7 +210,14 @@ export default {
   },
   data(){
     return{
+      mcLoc: '',
+      mcLoc2: '',
+      sidoList: [],
+      sigunguList: [],
       missCareImgList: [],
+      isEditMode: false, // 수정 모드 플래그
+      editedValue: '', // 사용자가 입력한 값을 저장하는 데이터
+      originalValue: '',
       misscareReplyDto: {
         replyNo: null,
         replyWriter: this.userNo,
@@ -173,6 +242,8 @@ export default {
     }
   },
   mounted() {
+    this.fetchSidoList();
+    this.fetchSigunguList();
   },
   computed: {
     mcStatusLabel() {
@@ -188,6 +259,7 @@ export default {
     formattedDate(){
       return moment(this.missCare.mcRegdate).format('YYYY.MM.DD');
     },
+
     msStatusClass() {
       switch (this.missCare.mcStatus) {
         case 1:
@@ -215,6 +287,14 @@ export default {
     }
   },
   methods:{
+    editValue() {
+      this.originalValue = this.missCare.mcGender;
+      this.editedValue = this.missCare.mcGender;
+      this.isEditMode = true;
+    },
+    toggleEditMode() {
+      this.isEditMode = !this.isEditMode;
+    },
     openReplyUpload(index) {
       const replyNo = this.replyList[index].replyNo;
       this.replyList.forEach((reply, i) => {
@@ -323,7 +403,49 @@ export default {
         }
         console.error('userNo is null');
       }
-    }
+    },
+    async fetchSidoList() {
+      try {
+        const response = await fetch('http://apis.data.go.kr/1543061/abandonmentPublicSrvc/sido?numOfRows=17&pageNo=1&serviceKey=aQc0i7nxPnLiQlZAS7cmLwlDZjOT3fdCdEI7XY2VzJP57%2BS1B6Djo1EeqOtJX0t7C%2B%2F3OQ4G7K5Eklk%2FZooJmw%3D%3D');
+        const xmlData = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlData, 'application/xml');
+        const items = xmlDoc.querySelectorAll('item');
+
+        this.sidoList = Array.from(items).map(item => {
+          return {
+            orgCd: item.querySelector('orgCd')?.textContent || '',
+            orgdownNm: item.querySelector('orgdownNm')?.textContent || '',
+          };
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    async fetchSigunguList(){
+      try{
+        const selectedSido = this.sidoList.find(sido => sido.orgCd === this.mcLoc);
+        if(selectedSido){
+          const response = await fetch(`http://apis.data.go.kr/1543061/abandonmentPublicSrvc/sigungu?upr_cd=${selectedSido.orgCd}&serviceKey=aQc0i7nxPnLiQlZAS7cmLwlDZjOT3fdCdEI7XY2VzJP57%2BS1B6Djo1EeqOtJX0t7C%2B%2F3OQ4G7K5Eklk%2FZooJmw%3D%3D`);
+          const xmlData = await response.text();
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(xmlData, 'application/xml');
+          const items = xmlDoc.querySelectorAll('item');
+
+          this.sigunguList = Array.from(items).map(item => {
+            return {
+              uprCd: item.querySelector('uprCd')?.textContent || '',
+              orgCd: item.querySelector('orgCd')?.textContent || '',
+              orgdownNm: item.querySelector('orgdownNm')?.textContent || '',
+            };
+          });
+        } else {
+          console.error('Selected sido not found');
+        }
+      }catch(error){
+        console.error('Error fetching data:', error);
+      }
+    },
   }
 }
 </script>
@@ -596,5 +718,9 @@ td:first-child {
 .writer{
   font-weight: 100;
   font-size: 11px;
+}
+
+table input{
+  border: 1px solid #929294;
 }
 </style>
